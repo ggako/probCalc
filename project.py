@@ -1,6 +1,31 @@
 import numpy as np
+import pandas as pd
 import csv
 import os
+
+
+def averagePPG(data):
+    """
+    Returns a pandas dataframe of points per game
+    """
+
+    placement = [int(x) for x in range(1,17)]
+
+    averagePPG = []
+    totalRounds = len(data[0]) # Note: data has 16 lists representing each placement with length: total number of rounds
+
+    # Computing averages
+    for dataRow in data:
+
+        average = sum(dataRow) / totalRounds
+
+        averagePPG.append(average)
+
+    # Creating dataframe
+    ppg_dict = {'Placement': placement , 'PPG': averagePPG}
+    ppg_df = pd.DataFrame(ppg_dict).set_index('Placement').round({'PPG':2})
+
+    return ppg_df
 
 
 def compileData(folderName):
@@ -115,9 +140,9 @@ def main():
 
     # print(readData('Data/EU/EU_ProtalityS8_GrandFinals.csv'))
     # print(compileData('EmptyFolder')) # Should raise exception
-    print(compileData('Data'))
+    # print(compileData('Data'))
     # print(np.shape(compileData('Data'))) 
-
+    print(averagePPG(compileData('Data')))
 
 if __name__ == "__main__":
     main()
