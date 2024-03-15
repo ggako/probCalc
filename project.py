@@ -4,9 +4,27 @@ import csv
 import os
 
 
+def standingRead(filename):
+    """
+    Input: filename of standing
+
+    Reads teams and current standing data
+
+    Returns two list (team and standing)
+    """
+
+    # Read as numpy array, transpose then convert to list
+    data = np.loadtxt(filename, delimiter=",", dtype=str).transpose().tolist()
+
+    teams = data[0]
+    standings = [int(x) for x in data[1]]
+        
+    return teams, standings
+
+
 def averagePPG(data):
     """
-    Returns a pandas dataframe of points per game
+    Returns a dataframe of points per game
     """
 
     placement = [int(x) for x in range(1,17)]
@@ -142,7 +160,10 @@ def main():
     # print(compileData('EmptyFolder')) # Should raise exception
     # print(compileData('Data'))
     # print(np.shape(compileData('Data'))) 
-    print(averagePPG(compileData('Data')))
+    # print(averagePPG(compileData('Data')))
+    teams, standings = standingRead('PTC_Phase1_Standing.csv')
+    print(teams)
+    print(standings)
 
 if __name__ == "__main__":
     main()
