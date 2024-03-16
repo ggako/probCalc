@@ -30,7 +30,9 @@ TBA
 - Quality improvement
 - Refactor
 
-
+## Preview
+**Placing inputs and heatmap generation**
+![Alt Text](https://github.com/ggako/probCalc/blob/main/images/demo.gif?raw=true)
 
 
 
