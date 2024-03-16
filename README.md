@@ -16,10 +16,11 @@ TBA
 **Essentials**
 - [x] Base simulation
 - [x] Viz: Heatmap
-- [-] Viz: Bar plots
-- [-] Working Prototype
-
-[x] - Completed  [-] - In Progress
+- [ ] Viz: Bar plots
+- [ ] Working Prototype
+####
+- [x] - **Completed**
+- [ ] - **In Progress**
 
 **Plan post-essentials**
 - Improve visualizations
