@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import csv
 import os
+import random
 
 
 def standingRead(filename):
@@ -44,6 +45,92 @@ def averagePPG(data):
     ppg_df = pd.DataFrame(ppg_dict).set_index('Placement').round({'PPG':2})
 
     return ppg_df
+
+
+def simulation(teams, data, standings, numTrials, roundsLeft):
+    """
+    Output: probability of each team getting 1,2,3,4,5,6....16th place
+
+    Returns: 
+
+    numpy array of results in win count format
+    # Rows represent team, columns represent placement
+    """
+
+    # Note results contains the information of how many times a team got / tally of a certain placement during simulation
+    results = np.zeros((len(teams), len(teams)), dtype=int) 
+    placements = list(range(len(teams)))
+    totalGames = np.shape(data)[1]
+
+    # Simulate tournaments
+    for _ in range(numTrials):
+
+        # Make copy of current standings
+        standingsCopy = standings.copy()
+
+        # Simulate games
+        for _ in range(roundsLeft):
+
+            # Select random game - will be selected via index
+            gameIndex = random.randint(0, totalGames - 1)
+            gamePoints = data[:,gameIndex]
+
+            # Shuffle placements (Teams will be assigned a random placement based from this list)
+            np.random.shuffle(placements)
+
+            # Add points to current standing
+            for k in range(16):
+                standingsCopy[k] += gamePoints[placements[k]]
+
+        # Get tournament placement
+        tournPlacement = getTournPlacement(standingsCopy)
+        # Decrement by 1 since lowest value starts with 1, need to start with 0 for accessing using index
+        tournPlacement = [x - 1 for x in tournPlacement] 
+
+        # Add placements to result 
+        for k in range(16):
+            results[k][tournPlacement[k]] += 1
+
+    # print(standingsCopy)
+    # print(tournPlacement)
+    # print(results)
+
+    return results
+
+
+def convertToProbResults(results, numTrials):
+    """
+    Returns probability equivalent of results (which is in tally format)
+    """
+
+    # Convert results in probability format - simply divide whole array by numTrials
+    probResults = np.copy(results)
+    probResults = np.divide(probResults, numTrials/100)
+    np.set_printoptions(suppress=True) # To suppress printing with default scientific notation
+
+    # print(probResults)
+
+    return probResults
+
+
+def getTournPlacement(input):
+    """
+    Returns placement from a given list (1 corresponds to largest item in output)
+
+    e.g. input = [1, 2, 3, 4, 0] ---> output = [4, 3, 2, 1, 5]
+
+    https://codereview.stackexchange.com/questions/65031/creating-a-list-containing-the-rank-of-the-elements-in-the-original-list
+    by mjolka
+    """
+
+    indices = list(range(len(input)))
+    indices.sort(key=lambda x: input[x])
+    output = [0] * len(indices)
+    for i, x in enumerate(indices):
+        # output[x] = i  
+        output[x] = len(input) - i  # Modified to len(input) - i to reverse order, 1 is the largest
+
+    return output  
 
 
 def compileData(folderName):
@@ -161,9 +248,15 @@ def main():
     # print(compileData('Data'))
     # print(np.shape(compileData('Data'))) 
     # print(averagePPG(compileData('Data')))
-    teams, standings = standingRead('PTC_Phase1_Standing.csv')
-    print(teams)
-    print(standings)
+    # teams, standings = standingRead('PTC_Phase1_Standing.csv')
+    # print(teams)
+    # print(standings)
+
+    teams, standings = standingRead('PCR2024_Season1_Standing.csv') 
+    numTrials = 100000
+    data2 = convertToProbResults(simulation(teams, compileData('Data'), standings, numTrials, 12), numTrials)
+    print(data2)
+
 
 if __name__ == "__main__":
     main()
