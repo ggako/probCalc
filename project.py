@@ -3,6 +3,71 @@ import pandas as pd
 import csv
 import os
 import random
+import matplotlib.pyplot as plt
+
+
+def visualizeResultsHeatmap(results, teams, threshold = None, colorlimit = 25, saveShow = True):
+    """
+    Returns a heatmap of results
+
+    Reference: https://matplotlib.org/stable/gallery/images_contours_and_fields/image_annotated_heatmap.html
+
+    Note: 
+    threshold - Below threshold, the cell will not be annotated
+    colorlimit - Below color limit annotations will be black, above will be white for readability
+    saveShow - saves and show figure - use False when calling from application
+    """
+
+    # fig, ax = plt.subplots()
+    # im = ax.imshow(results)
+
+    # Heat map
+    fig, ax = plt.subplots(figsize=(12,12))
+    # ax.imshow(results, cmap='OrRd')
+    # ax.imshow(results, cmap='YlGn')
+    ax.imshow(results, cmap='winter')
+
+    # Making x-label
+    placements = [x + 1 for x in range(len(teams))]
+
+    # Show all ticks and label them with the respective list entries
+    ax.set_xticks(np.arange(len(placements)), labels=placements)
+    ax.set_yticks(np.arange(len(teams)), labels=teams)
+    ax.tick_params(top=True, labeltop=True, bottom=True, labelbottom=True)
+
+    # Rotate the tick labels and set their alignment.
+    plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
+            rotation_mode="anchor")
+    
+    # Loop over data dimensions and create text annotations.
+    # Case: no threshold indicated - adds annotation to all cells
+    if threshold == None:
+        for i in range(len(teams)):
+            for j in range(len(placements)):
+                text = ax.text(j, i, round(results[i, j],2),
+                            ha="center", va="center", color="k")    
+    # Case: threshold indicated - only adds annotation to cells above the threshold
+    else:
+        for i in range(len(teams)):
+            for j in range(len(placements)):
+                if results[i, j] >= threshold:
+                    if results[i, j] < colorlimit:
+                        text = ax.text(j, i, round(results[i, j],2),
+                                    ha="center", va="center", color="w")  
+                    else:
+                        text = ax.text(j, i, round(results[i, j],2),
+                                    ha="center", va="center", color="k")  
+                else:
+                    pass  
+            
+    ax.set_title("Tournament Placement Heatmap")
+    fig.tight_layout()
+
+    if saveShow == True:
+        plt.savefig('probability.png')
+        plt.show()
+
+    return fig, ax
 
 
 def standingRead(filename):
@@ -251,11 +316,11 @@ def main():
     # teams, standings = standingRead('PTC_Phase1_Standing.csv')
     # print(teams)
     # print(standings)
-
     teams, standings = standingRead('PCR2024_Season1_Standing.csv') 
     numTrials = 100000
     data2 = convertToProbResults(simulation(teams, compileData('Data'), standings, numTrials, 12), numTrials)
-    print(data2)
+    visualizeResultsHeatmap(data2, teams, 0.8, 25)
+    # print(data2)
 
 
 if __name__ == "__main__":
