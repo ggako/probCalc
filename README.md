@@ -13,22 +13,19 @@ TBA
 TBA
 
 ## Project Milestones
-**Essentials**
+**Roadmap**
 - [x] Base simulation
 - [x] Viz: Heatmap
 - [x] Viz: Bar plots
-- [ ] Working Prototype
+- [ ] *Prototype* 
+- [ ] *Viz: Top Nth Probability*
+- [ ] Add Phase 1 2024 data
+- [ ] Feature: Floor/Ceiling
+
 ####
 - [x] - **Completed**
-- [ ] - **In Progress**
-
-**Plan post-essentials**
-- Improve visualizations
-- Collect updated data
-- Fix Arising Bugs during Input
-- Improve interface
-- Quality improvement
-- Refactor
+- [ ] - **To be Completed**
+- *Italicized* - **In progress**
 
 ## Preview
 **Placing inputs and heatmap generation**
