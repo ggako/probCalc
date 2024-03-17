@@ -16,8 +16,8 @@ TBA
 **Essentials**
 - [x] Base simulation
 - [x] Viz: Heatmap
-- [ ] Viz: Bar plots
-- [ ] Working Prototype
+- [x] Viz: Bar plots
+- [] Working Prototype
 ####
 - [x] - **Completed**
 - [ ] - **In Progress**
