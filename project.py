@@ -12,17 +12,20 @@ def visualizeBarPlacement(data, teams, placement, addLabel=True):
     Returns bar plot figures for each placement
     """
 
+    plt.style.use('dark_background')
+
     placementIndex = placement - 1
 
     fig = plt.figure(figsize = (10, 5))
     ax = fig.add_subplot(1, 1, 1)
     
     # creating the bar plot
-    plt.bar(teams, data[placementIndex], color ='yellowgreen', edgecolor='black', linewidth=2,
+    plt.bar(teams, data[placementIndex], color ='yellowgreen', edgecolor='white', linewidth=1,
             width = 1)
 
     # Changing background color
-    ax.set_facecolor('beige')
+    # ax.set_facecolor('beige')
+    ax.set_facecolor('black')
     
     def addlabels(x,y):
         """
@@ -57,6 +60,8 @@ def visualizeResultsHeatmap(results, teams, threshold = None, colorlimit = 25, s
     colorlimit - Below color limit annotations will be black, above will be white for readability
     saveShow - saves and show figure - use False when calling from application
     """
+
+    plt.style.use('dark_background')
 
     # fig, ax = plt.subplots()
     # im = ax.imshow(results)
@@ -348,6 +353,7 @@ def readData(filename):
 
 def main():
 
+    pass
     # teams, standings = standingRead('PMS2024_Phase1_Standing.csv') 
     # numTrials = 100000
     # data2 = convertToProbResults(simulation(teams, compileData('Data'), standings, numTrials, 12), numTrials)
