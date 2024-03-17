@@ -25,8 +25,7 @@
 *Italicized* - **In progress**
 
 ## Preview
-**Placing inputs and heatmap generation**
-![Alt Text](https://github.com/ggako/probCalc/blob/main/images/demo.gif?raw=true)
+[![](https://img.youtube.com/vi/GT2QtXWWwNU/maxresdefault.jpg)](https://www.youtube.com/watch?v=GT2QtXWWwNU)
 
 
 
