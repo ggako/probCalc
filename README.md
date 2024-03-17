@@ -25,6 +25,7 @@ TBA
 ####
 - [x] - **Completed**
 - [ ] - **To be Completed**
+####
 *Italicized* - **In progress**
 
 ## Preview
