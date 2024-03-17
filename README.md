@@ -25,7 +25,7 @@ TBA
 ####
 - [x] - **Completed**
 - [ ] - **To be Completed**
-- *Italicized* - **In progress**
+*Italicized* - **In progress**
 
 ## Preview
 **Placing inputs and heatmap generation**
