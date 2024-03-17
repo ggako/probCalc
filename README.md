@@ -6,21 +6,17 @@
 
 #### Trivia: Why a mountain logo? It depicts the movement of team standings throughout the tournament (some teams ascend to the top / fall to the bottom of the leaderboard)
 
-## Features
-TBA
-
-## Usage
-TBA
 
 ## Project Milestones
 **Roadmap**
 - [x] Base simulation
-- [x] Viz: Heatmap
-- [x] Viz: Bar plots
+- [x] Feature: Heatmap
+- [x] Feature: Placement Distribution
 - [ ] *Prototype* 
 - [ ] *Viz: Top Nth Probability*
 - [ ] Add Phase 1 2024 data
-- [ ] Feature: Floor/Ceiling
+- [ ] Feature: Floor/Expected/Ceiling
+- [ ] Feature: PPG Recommender
 
 ####
 - [x] - **Completed**
