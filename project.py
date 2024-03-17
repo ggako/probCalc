@@ -4,6 +4,46 @@ import csv
 import os
 import random
 import matplotlib.pyplot as plt
+from num2words import num2words
+
+
+def visualizeBarPlacement(data, teams, placement, addLabel=True):
+    """
+    Returns bar plot figures for each placement
+    """
+
+    placementIndex = placement - 1
+
+    fig = plt.figure(figsize = (10, 5))
+    ax = fig.add_subplot(1, 1, 1)
+    
+    # creating the bar plot
+    plt.bar(teams, data[placementIndex], color ='yellowgreen', edgecolor='black', linewidth=2,
+            width = 1)
+
+    # Changing background color
+    ax.set_facecolor('beige')
+    
+    def addlabels(x,y):
+        """
+        https://www.geeksforgeeks.org/adding-value-labels-on-a-matplotlib-bar-chart/
+        """
+        for i in range(len(x)):
+            if y[i] > .200:
+                plt.text(i, y[i], round(y[i],2), ha = 'center',
+                        bbox = dict(facecolor = 'red', alpha =.8))
+    
+    # Adding data labels
+    if addLabel:
+        addlabels(teams, data[placementIndex])
+
+    plt.title(f"% Chance Getting {num2words(placement, lang='en', to='ordinal_num')} Place")
+    plt.xlabel("Teams")
+    plt.ylabel("%")
+    plt.xticks(teams)
+    plt.show()
+
+    return fig, ax
 
 
 def visualizeResultsHeatmap(results, teams, threshold = None, colorlimit = 25, saveShow = True):
@@ -308,19 +348,11 @@ def readData(filename):
 
 def main():
 
-    # print(readData('Data/EU/EU_ProtalityS8_GrandFinals.csv'))
-    # print(compileData('EmptyFolder')) # Should raise exception
-    # print(compileData('Data'))
-    # print(np.shape(compileData('Data'))) 
-    # print(averagePPG(compileData('Data')))
-    # teams, standings = standingRead('PTC_Phase1_Standing.csv')
-    # print(teams)
-    # print(standings)
-    teams, standings = standingRead('PCR2024_Season1_Standing.csv') 
-    numTrials = 100000
-    data2 = convertToProbResults(simulation(teams, compileData('Data'), standings, numTrials, 12), numTrials)
-    visualizeResultsHeatmap(data2, teams, 0.8, 25)
-    # print(data2)
+    # teams, standings = standingRead('PMS2024_Phase1_Standing.csv') 
+    # numTrials = 100000
+    # data2 = convertToProbResults(simulation(teams, compileData('Data'), standings, numTrials, 12), numTrials)
+    # visualizeResultsHeatmap(data2, teams, 0.8, 25)
+    # visualizeBarPlacement(data2, teams, 16)
 
 
 if __name__ == "__main__":
