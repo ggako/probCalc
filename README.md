@@ -17,7 +17,7 @@ TBA
 - [x] Base simulation
 - [x] Viz: Heatmap
 - [x] Viz: Bar plots
-- [] Working Prototype
+- [ ] Working Prototype
 ####
 - [x] - **Completed**
 - [ ] - **In Progress**
