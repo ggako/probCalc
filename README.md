@@ -13,8 +13,7 @@
 - [x] Feature: Heatmap
 - [x] Feature: Placement Distribution
 - [x] Prototype
-- [ ] *Viz: Top Nth Probability*
-- [ ] Add Phase 1 2024 data
+- [ ] *Feature: Top/Bottom Nth Distribution*
 - [ ] Feature: Floor/Expected/Ceiling
 - [ ] Feature: PPG Recommender
 
