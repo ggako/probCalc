@@ -12,7 +12,7 @@
 - [x] Base simulation
 - [x] Feature: Heatmap
 - [x] Feature: Placement Distribution
-- [ ] *Prototype* 
+- [x] Prototype
 - [ ] *Viz: Top Nth Probability*
 - [ ] Add Phase 1 2024 data
 - [ ] Feature: Floor/Expected/Ceiling
