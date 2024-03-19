@@ -39,6 +39,6 @@ placement = st.sidebar.slider('Placement to Plot (Select from 1 to 16)', 1, 16, 
 # Run Calculation
 if placement is not None and filenameStanding is not None:
     teams, standings = ppe.standingRead(filenameStanding) 
-    data = ppe.convertToProbResults(ppe.simulation(teams, ppe.compileData(folderName), standings, numTrials, 12), numTrials)
+    data = ppe.convertToProbResults(ppe.simulation(teams, ppe.compileData(folderName), standings, numTrials, rounds), numTrials)
     fig, ax = ppe.visualizeBarPlacement(data, teams, placement, addLabel=toLabel)
     st.pyplot(fig)

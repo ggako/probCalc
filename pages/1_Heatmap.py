@@ -32,6 +32,6 @@ numTrials = st.sidebar.number_input("Tournaments to be simulated", value=100000,
 if st.sidebar.button('Run Simulation') and filenameStanding is not None: 
 
     teams, standings = ppe.standingRead(filenameStanding) 
-    data = ppe.convertToProbResults(ppe.simulation(teams, ppe.compileData(folderName), standings, numTrials, 12), numTrials)
+    data = ppe.convertToProbResults(ppe.simulation(teams, ppe.compileData(folderName), standings, numTrials, rounds), numTrials)
     fig, ax = ppe.visualizeResultsHeatmap(data, teams, 0.8, 25, saveShow=False)
     st.pyplot(fig)
