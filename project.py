@@ -5,9 +5,11 @@ import os
 import random
 import matplotlib.pyplot as plt
 from num2words import num2words
+import matplotlib.colors as mc # For bar plot coloring
+import colorsys # For bar plot coloring
 
 
-def visualizeBarPlacement(data, teams, placement, addLabel=True):
+def visualizeBarPlacement(data, teams, placement, addLabel=True, color_base="mediumslateblue"):
     """
     Returns bar plot figures for each placement
     """
@@ -19,8 +21,44 @@ def visualizeBarPlacement(data, teams, placement, addLabel=True):
     fig = plt.figure(figsize = (10, 5))
     ax = fig.add_subplot(1, 1, 1)
     
+
+    def lighten_color(color, amount):
+        """
+        Lightens the given color by multiplying (1-luminosity) by the given amount.
+        Input can be matplotlib color string, hex string, or RGB tuple.
+
+        Examples:
+        >> lighten_color('g', 0.3)
+        >> lighten_color('#F034A3', 0.6)
+        >> lighten_color((.3,.55,.1), 0.5)
+
+        Source: https://gist.github.com/ihincks/6a420b599f43fcd7dbd79d56798c4e5a
+        """
+        try:
+            c = mc.cnames[color]
+        except:
+            c = color
+        c = colorsys.rgb_to_hls(*mc.to_rgb(c))
+
+        # Modification - to account for ValueError: RGBA values should be within 0-1 range
+        g_value = 1 - amount * (1 - c[1])
+        
+        if g_value < 0:
+            return colorsys.hls_to_rgb(c[0], 0, c[2])
+        else:
+            return colorsys.hls_to_rgb(c[0], g_value, c[2])
+
+
+    # Create color list to be used based on probability values
+    lightenBy = np.max(data[placementIndex])  # Constant "multiplier" for amount to lighten. Max value will be regular color lesser values will be lighter
+    lightenAmount = data[placementIndex] / lightenBy # % amount of how much color is retained
+    lightenAmount[lightenAmount < .4] = .4 # Change minimum lightenAmount
+    colorsBar = [] # Initialize List of values to be used for bar plot
+    for lightenAmountIndex in range(16):
+        colorsBar.append(lighten_color(color_base, lightenAmount[lightenAmountIndex]))
+
     # creating the bar plot
-    plt.bar(teams, data[placementIndex], color ='yellowgreen', edgecolor='white', linewidth=1,
+    plt.bar(teams, data[placementIndex], color = colorsBar, edgecolor='black', linewidth=1,
             width = 1)
 
     # Changing background color
@@ -358,7 +396,7 @@ def main():
     # numTrials = 100000
     # data2 = convertToProbResults(simulation(teams, compileData('Data'), standings, numTrials, 12), numTrials)
     # visualizeResultsHeatmap(data2, teams, 0.8, 25)
-    # visualizeBarPlacement(data2, teams, 16)
+    # visualizeBarPlacement(data2, teams, 1)
 
 
 if __name__ == "__main__":
