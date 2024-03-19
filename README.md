@@ -13,8 +13,8 @@
 - [x] Feature: Heatmap
 - [x] Feature: Placement Distribution
 - [x] Prototype
-- [ ] *Feature: Top/Bottom Nth Distribution*
-- [ ] Feature: Floor/Expected/Ceiling
+- [x] Feature: Top/Bottom Nth Distribution
+- [ ] *Feature: Floor/Expected/Ceiling*
 - [ ] Feature: PPG Recommender
 
 ####
@@ -23,7 +23,7 @@
 ####
 *Italicized* - **In progress**
 
-## Preview
+## Preview (First 2 Features)
 [![](https://img.youtube.com/vi/GT2QtXWWwNU/maxresdefault.jpg)](https://www.youtube.com/watch?v=GT2QtXWWwNU)
 
 
