@@ -5,8 +5,139 @@ import os
 import random
 import matplotlib.pyplot as plt
 from num2words import num2words
-import matplotlib.colors as mc # For bar plot coloring
-import colorsys # For bar plot coloring
+import matplotlib.colors as mc 
+import colorsys 
+
+
+def visualizeProbRangeResults(data, teams, upper, lower, addLabel=True, color_base="mediumslateblue"):
+    """
+    Returns bar plot figures for single array input 
+    """
+
+    plt.style.use('dark_background')
+
+    fig = plt.figure(figsize = (10, 5))
+    ax = fig.add_subplot(1, 1, 1)
+    
+    # Create color list to be used based on probability values
+    lightenBy = np.max(data)  # Constant "multiplier" for amount to lighten. Max value will be regular color lesser values will be lighter
+    lightenAmount = data / lightenBy # % amount of how much color is retained
+    lightenAmount[lightenAmount < .4] = .4 # Change minimum lightenAmount
+    colorsBar = [] # Initialize List of values to be used for bar plot
+    for lightenAmountIndex in range(16):
+        colorsBar.append(lighten_color(color_base, lightenAmount[lightenAmountIndex]))
+
+    # creating the bar plot
+    plt.bar(teams, data, color = colorsBar, edgecolor='black', linewidth=1,
+            width = 1)
+
+    # Changing background color
+    # ax.set_facecolor('beige')
+    ax.set_facecolor('black')
+    
+    # Adding data labels
+    if addLabel:
+        addlabels(teams, data)
+
+    # Title cases
+    # Title: Case 1: Top placement title
+    if upper == 1:
+        plt.title(f"% Chance Getting Top {lower}")
+    # Title: Case 2: Bottom placement title
+    elif lower == 16:
+        plt.title(f"% Chance Getting Bottom {16 - upper + 1}")
+    # Title: Case 3: Placement range
+    else:
+        plt.title(f"% Chance Getting {num2words(upper, lang='en', to='ordinal_num')} to {num2words(lower, lang='en', to='ordinal_num')} Place")
+
+    plt.xlabel("Teams")
+    plt.ylabel("%")
+    plt.xticks(teams)
+    plt.show()
+
+    return fig, ax
+
+
+def upperLowerValidityCheck(upper, lower):
+    """
+    Returns True if upper and lower value is valid otherwise raises an Exception error
+    """
+
+    # Initialize valid values for upper and lower
+    availablePlacementsUpper = [x for x in range(1,16)]
+    availablePlacementsLower = [x for x in range(2,17)]
+
+    # Check for exception cases
+    # Case 1: Upper > lower
+    if upper > lower:
+        raise Exception("Range invalid: Lower placement value should be greater than upper placement")
+    # Case 2: Lower == upper
+    if upper == lower:
+        raise Exception("Range invalid: Lower placement value should not be the same as the upper placement")
+    # Case 3: Upper value is not valid (not in 1-15)
+    if upper not in availablePlacementsUpper:
+        raise Exception("ValueError: Upper value should be between 1-15")
+    # Case 4: Lower value is not valid (not in 2-16)
+    if lower not in availablePlacementsLower:
+        raise Exception("ValueError: Upper value should be between 2-16")
+    
+    return True
+
+
+def probRangeResults(data, upper, lower):
+    """
+    Returns the probability distribution of teams getting top [lower, upper] range inclusive
+    """
+    
+    if upperLowerValidityCheck(upper, lower):
+
+        # Get range probabilities
+        X = data[:,upper-1:lower]
+
+        # Get total probability
+        X = np.sum(X, axis=1)
+
+        return X
+
+    else:
+        raise ValueError
+    
+
+def lighten_color(color, amount):
+    """
+    Lightens the given color by multiplying (1-luminosity) by the given amount.
+    Input can be matplotlib color string, hex string, or RGB tuple.
+
+    Examples:
+    >> lighten_color('g', 0.3)
+    >> lighten_color('#F034A3', 0.6)
+    >> lighten_color((.3,.55,.1), 0.5)
+
+    Source: https://gist.github.com/ihincks/6a420b599f43fcd7dbd79d56798c4e5a
+    """
+    try:
+        c = mc.cnames[color]
+    except:
+        c = color
+    c = colorsys.rgb_to_hls(*mc.to_rgb(c))
+
+    # Modification - to account for ValueError: RGBA values should be within 0-1 range
+    g_value = 1 - amount * (1 - c[1])
+    
+    if g_value < 0:
+        return colorsys.hls_to_rgb(c[0], 0, c[2])
+    else:
+        return colorsys.hls_to_rgb(c[0], g_value, c[2])
+
+
+def addlabels(x,y):
+    """
+    https://www.geeksforgeeks.org/adding-value-labels-on-a-matplotlib-bar-chart/
+    """
+    for i in range(len(x)):
+        if y[i] > .200:
+            plt.text(i, y[i], round(y[i],2), ha = 'center',
+                    bbox = dict(facecolor = 'red', alpha =.8))
 
 
 def visualizeBarPlacement(data, teams, placement, addLabel=True, color_base="mediumslateblue"):
@@ -20,34 +151,6 @@ def visualizeBarPlacement(data, teams, placement, addLabel=True, color_base="med
 
     fig = plt.figure(figsize = (10, 5))
     ax = fig.add_subplot(1, 1, 1)
-    
-
-    def lighten_color(color, amount):
-        """
-        Lightens the given color by multiplying (1-luminosity) by the given amount.
-        Input can be matplotlib color string, hex string, or RGB tuple.
-
-        Examples:
-        >> lighten_color('g', 0.3)
-        >> lighten_color('#F034A3', 0.6)
-        >> lighten_color((.3,.55,.1), 0.5)
-
-        Source: https://gist.github.com/ihincks/6a420b599f43fcd7dbd79d56798c4e5a
-        """
-        try:
-            c = mc.cnames[color]
-        except:
-            c = color
-        c = colorsys.rgb_to_hls(*mc.to_rgb(c))
-
-        # Modification - to account for ValueError: RGBA values should be within 0-1 range
-        g_value = 1 - amount * (1 - c[1])
-        
-        if g_value < 0:
-            return colorsys.hls_to_rgb(c[0], 0, c[2])
-        else:
-            return colorsys.hls_to_rgb(c[0], g_value, c[2])
-
 
     # Create color list to be used based on probability values
     lightenBy = np.max(data[placementIndex])  # Constant "multiplier" for amount to lighten. Max value will be regular color lesser values will be lighter
@@ -390,13 +493,7 @@ def readData(filename):
 
 
 def main():
-
     pass
-    # teams, standings = standingRead('PMS2024_Phase1_Standing.csv') 
-    # numTrials = 100000
-    # data2 = convertToProbResults(simulation(teams, compileData('Data'), standings, numTrials, 12), numTrials)
-    # visualizeResultsHeatmap(data2, teams, 0.8, 25)
-    # visualizeBarPlacement(data2, teams, 1)
 
 
 if __name__ == "__main__":
