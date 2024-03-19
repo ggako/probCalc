@@ -63,7 +63,7 @@ def ppgTournMeanStdev(folderName):
     means = np.mean(data, axis=0) 
     stdev = np.std(data, axis=0, ddof=1) # Note: ddof = 1 for sample standard deviation
     
-    return np.array(data)
+    return means, stdev
 
 
 def ppgReco():
