@@ -9,6 +9,82 @@ import matplotlib.colors as mc
 import colorsys 
 
 
+def ppgSolo(fileName):
+    """
+    Returns ppg per game of a single/solo tournament
+    """
+    
+    # Get points data
+    data = readData(fileName)
+
+    # Get number of rounds
+    rounds = np.shape(data)[1]
+    
+    # Get total score
+    total = np.sum(data, axis=1) 
+
+    return list(total / rounds)
+
+
+def ppgTournMeanStdev(folderName):
+    """
+    Calculates mean and standard deviation of PPG across all tournaments
+    """
+
+    # Initialize file name list
+    filelist = []
+
+    # Get all csv files in folder
+    for root, dirs, files in os.walk(folderName):
+        for file in files:
+            #append the file name to the list
+            if(file.endswith(".csv")):
+                filelist.append(os.path.join(root,file))
+
+    # Check if file is empty
+    if len(filelist) == 0:
+        raise Exception("No csv files found")
+
+    # Initialize data
+    dataExist = False # Used for initialization
+
+    # Fill data variable
+    for name in filelist:
+        # Initialization case
+        if dataExist == False:
+            data = []
+            data.append(ppgSolo(name))
+            dataExist = True
+        # Concatenate data column wise
+        else:
+            data.append(ppgSolo(name))
+            
+    # Get averages and standard deviation
+    means = np.mean(data, axis=0) 
+    stdev = np.std(data, axis=0, ddof=1) # Note: ddof = 1 for sample standard deviation
+    
+    return np.array(data)
+
+
+def ppgReco():
+    """
+    Returns the RPPG for a team to get to a certain placement by the end of tournament
+    """
+    pass
+
+
+def floorExpectedCeiling():
+    """
+    Returns a table of floor, expected, ceiling placements of teams
+
+    Note: 
+    Floor: lowest placement with p > 0
+    Ceiling: highest placement with p > 0
+    Expected: placements with p > .05
+    """
+    pass
+
+
 def visualizeProbRangeResults(data, teams, upper, lower, addLabel=True, color_base="mediumslateblue"):
     """
     Returns bar plot figures for single array input 
