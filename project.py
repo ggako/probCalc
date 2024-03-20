@@ -93,7 +93,9 @@ def visualizeFloorExpectedCeiling(df):
 
     fig.tight_layout()
 
-    plt.show()    
+    # plt.show()
+
+    return fig, ax  
 
 
 def floorExpectedCeiling(data, teams, threshold = 1, expectedThreshold = 7):
