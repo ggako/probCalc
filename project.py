@@ -76,8 +76,10 @@ def ppgReco():
 def visualizeFloorExpectedCeiling(df):
     """
     Returns a table from a dataframe
+    Note: Used for floorExpectedCeiling generated dataframe
     """
-
+    
+    plt.style.use('default')
     plt.style.use("Solarize_Light2")
 
     fig, ax = plt.subplots()
@@ -169,6 +171,7 @@ def visualizeProbRangeResults(data, teams, upper, lower, addLabel=True, color_ba
     Returns bar plot figures for single array input 
     """
 
+    plt.style.use('default')
     plt.style.use('dark_background')
 
     fig = plt.figure(figsize = (10, 5))
@@ -300,6 +303,7 @@ def visualizeBarPlacement(data, teams, placement, addLabel=True, color_base="med
     Returns bar plot figures for each placement
     """
 
+    plt.style.use('default')
     plt.style.use('dark_background')
 
     placementIndex = placement - 1
