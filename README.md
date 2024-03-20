@@ -14,8 +14,8 @@
 - [x] Feature: Placement Distribution
 - [x] Prototype
 - [x] Feature: Top/Bottom Nth Distribution
-- [ ] *Feature: Floor/Expected/Ceiling*
-- [ ] Feature: PPG Recommender
+- [x] Feature: Floor/Expected/Ceiling
+- [ ] *Feature: PPG Recommender*
 
 ####
 - [x] - **Completed**
