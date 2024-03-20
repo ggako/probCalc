@@ -73,16 +73,93 @@ def ppgReco():
     pass
 
 
-def floorExpectedCeiling():
+def visualizeFloorExpectedCeiling(df):
+    """
+    Returns a table from a dataframe
+    """
+
+    plt.style.use("Solarize_Light2")
+
+    fig, ax = plt.subplots()
+
+    # hide axes
+    # fig.patch.set_visible(False)
+    ax.axis('off')
+    ax.axis('tight')
+
+    resultsTable = ax.table(cellText=df.values, rowLabels=df.index, colLabels=df.columns, loc='center', cellLoc='center')
+
+    resultsTable.scale(1.5, 1.5) 
+
+    fig.tight_layout()
+
+    plt.show()    
+
+
+def floorExpectedCeiling(data, teams, threshold = 1, expectedThreshold = 7):
     """
     Returns a table of floor, expected, ceiling placements of teams
 
+    threshold: probability below threshold % is considered as "impossible"
+    expectedThreshold: probability above this threshold % is considered as "expected"
+
     Note: 
-    Floor: lowest placement with p > 0
-    Ceiling: highest placement with p > 0
-    Expected: placements with p > .05
+    Floor: lowest placement with p > threshold (note: p < threshold will be considered as outlier)
+    Ceiling: highest placement with p > threshold
+    Expected: placements with p > 5
     """
-    pass
+
+    floor = []
+    ceiling = [] 
+    expected = []
+
+    # Get boolean equivalent of probability array
+    dataFloorCeil = data > threshold
+    dataExpected = data > expectedThreshold
+
+    # Convert array to list
+    dataFloorCeil = dataFloorCeil.tolist() 
+    dataExpected = dataExpected.tolist()
+
+    # Getting the floor and ceiling per team
+    for list in dataFloorCeil:
+
+        # Array of index of True values
+        trueIndices = [] 
+        
+        # Get all indices of true values
+        for i in range(len(list)):
+            if list[i] == True:
+                trueIndices.append(i)
+
+        # Get floor and ceiling values (+ 1 - to get actual placement e.g. 0 index = 1st place)
+        floor.append(max(trueIndices) + 1)
+        ceiling.append(min(trueIndices) + 1)
+
+    # Getting the expected per team
+    for list in dataExpected:
+
+        # Array of index of True values
+        trueIndices = []    
+
+        # Get all indices of true values
+        for i in range(len(list)):
+            if list[i] == True:
+                trueIndices.append(i)
+
+        # Get the range of True values (in tuple format)
+        expectedRange = (min(trueIndices) + 1, max(trueIndices) + 1)
+        expected.append(expectedRange)
+
+    # Making dataframe of results
+    data2 = {'Team': teams,
+            'Ceiling': ceiling,
+            'Expected Range': expected,
+            'Floor': floor}
+    
+    df = pd.DataFrame(data2).set_index('Team')
+    
+    return df
 
 
 def visualizeProbRangeResults(data, teams, upper, lower, addLabel=True, color_base="mediumslateblue"):
@@ -129,7 +206,7 @@ def visualizeProbRangeResults(data, teams, upper, lower, addLabel=True, color_ba
     plt.xlabel("Teams")
     plt.ylabel("%")
     plt.xticks(teams)
-    plt.show()
+    # plt.show()
 
     return fig, ax
 
@@ -261,7 +338,7 @@ def visualizeBarPlacement(data, teams, placement, addLabel=True, color_base="med
     plt.xlabel("Teams")
     plt.ylabel("%")
     plt.xticks(teams)
-    plt.show()
+    # plt.show()
 
     return fig, ax
 
