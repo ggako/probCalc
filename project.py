@@ -66,17 +66,17 @@ def ppgTournMeanStdev(folderName):
     return means, stdev
 
 
-def ppgRecoResults(team, recoMatrix):
+def ppgRecoResults(teams, recoMatrixMin, recoMatrixMax):
     """
-    Displays PPG range recommendation
+    Displays RPPG range recommendation
     """
     pass
 
 
-def ppgRecoMatrix(standings, folderName, roundsCompleted, roundsLeft):
+def ppgRecoMatrix(standings, teams, folderName, roundsCompleted, roundsLeft):
     """
     Returns the RPPG for a team to get to a certain placement by the end of tournament
-    Returns two 16x16 matrix representing minimum and maximum targets
+    Returns two 16x16 dataframe representing minimum and maximum targets
     Each row represents each team whereby columns will represent target PPG
     """
 
@@ -108,10 +108,22 @@ def ppgRecoMatrix(standings, folderName, roundsCompleted, roundsLeft):
     targetTotalMin = expectedFinalMin - npStandingsMatrix
 
     # Get target PPG for remaining rounds
-    targetPpgMax = targetTotalMax / roundsLeft
-    targetPpgMin = targetTotalMin / roundsLeft
+    targetPpgMax = np.round(targetTotalMax / roundsLeft, 1)
+    targetPpgMin = np.round(targetTotalMin / roundsLeft, 1)
 
-    return targetPpgMax, targetPpgMin
+    # Create row header - placements 
+    rowHeader = [x for x in range(1,17)]
+
+    # Create dataframe of 
+    dfMax = pd.DataFrame(data = targetPpgMax,  
+                    index = teams,  
+                    columns = rowHeader) 
+    
+    dfMin = pd.DataFrame(data = targetPpgMin,  
+                    index = teams,  
+                    columns = rowHeader) 
+
+    return dfMax, dfMin
 
 
 def visualizeFloorExpectedCeiling(df):
