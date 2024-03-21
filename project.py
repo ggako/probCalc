@@ -66,11 +66,52 @@ def ppgTournMeanStdev(folderName):
     return means, stdev
 
 
-def ppgReco():
+def ppgRecoResults(team, recoMatrix):
     """
-    Returns the RPPG for a team to get to a certain placement by the end of tournament
+    Displays PPG range recommendation
     """
     pass
+
+
+def ppgRecoMatrix(standings, folderName, roundsCompleted, roundsLeft):
+    """
+    Returns the RPPG for a team to get to a certain placement by the end of tournament
+    Returns two 16x16 matrix representing minimum and maximum targets
+    Each row represents each team whereby columns will represent target PPG
+    """
+
+    # Create a 16 x 16 matrix of standings - standings will be duplicated columnwise
+    npStandingsMatrix = [standings] * 16
+    npStandingsMatrix = np.array(npStandingsMatrix).transpose()
+
+    # Get mean and standard deviation of past tournaments
+    means, stdev = ppgTournMeanStdev(folderName)
+
+    # Reshape array  to 2d
+    means = np.reshape(means,(1, means.size))
+    stdev = np.reshape(stdev,(1, stdev.size))
+    
+    # Create a 16 x 16 matrix of ppg means and stdev
+    meansMatrix = np.repeat(means, 16, 0)
+    stdevMatrix = np.repeat(stdev, 16, 0)
+
+    # Get max and min PPG matrix
+    ppgMax = meansMatrix + 2 * stdevMatrix
+    ppgMin = meansMatrix - 2 * stdevMatrix
+
+    # Get expected final points
+    expectedFinalMax = np.multiply(ppgMax, roundsCompleted + roundsLeft)
+    expectedFinalMin = np.multiply(ppgMin, roundsCompleted + roundsLeft) 
+
+    # Get target total points
+    targetTotalMax = expectedFinalMax - npStandingsMatrix
+    targetTotalMin = expectedFinalMin - npStandingsMatrix
+
+    # Get target PPG for remaining rounds
+    targetPpgMax = targetTotalMax / roundsLeft
+    targetPpgMin = targetTotalMin / roundsLeft
+
+    return targetPpgMax, targetPpgMin
 
 
 def visualizeFloorExpectedCeiling(df):
