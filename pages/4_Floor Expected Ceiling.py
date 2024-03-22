@@ -13,8 +13,6 @@ st.write('''
 
 st.sidebar.header('User Input')
 
-st.sidebar.header('User Input')
-
 folderName = st.sidebar.selectbox(
 'Data Source Folder',
 ["Data"],
@@ -37,5 +35,4 @@ if st.sidebar.button('Run Simulation') and filenameStanding is not None:
     data = ppe.convertToProbResults(ppe.simulation(teams, ppe.compileData(folderName), standings, numTrials, rounds), numTrials)
     df = ppe.floorExpectedCeiling(data, teams)
     fig, ax = ppe.visualizeFloorExpectedCeiling(df)
-    with st.container():
-        st.pyplot(fig)
+    st.pyplot(fig)
