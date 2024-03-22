@@ -15,7 +15,7 @@
 - [x] Prototype
 - [x] Feature: Top/Bottom Nth Distribution
 - [x] Feature: Floor/Expected/Ceiling
-- [ ] *Feature: PPG Recommender*
+- [x] Feature: PPG Recommender
 
 ####
 - [x] - **Completed**
