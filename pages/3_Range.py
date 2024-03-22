@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import project as ppe # PPE = Placement Probability Estimator
 
-st.set_page_config(page_title='Placement', page_icon='images/mountain_icon.png', layout="centered", initial_sidebar_state="expanded", menu_items=None)
+st.set_page_config(page_title='Range Placement', page_icon='images/mountain_icon.png', layout="centered", initial_sidebar_state="expanded", menu_items=None)
 
 # Title
 st.write('''

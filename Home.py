@@ -12,6 +12,6 @@ st.markdown(
     - **Placement**: to see the distribution for a specific placement
     - **Range**: to see the distribution for a specific range of placement (e.g. % Chance of getting Top 4, Bottom 8, Rank 6-10)
     - **Floor Expected Ceiling**: to see the floor, expected range, ceiling of placements of teams after the tournament
-    - **PPG Recommender**: to see the recommended PPG in the remaining rounds to achieve a certain placement by the end of the tournament
+    - **PPG Recommender**: to see the recommended PPG for the remaining rounds to achieve a certain placement by the end of the tournament
     """
 )
