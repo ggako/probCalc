@@ -66,13 +66,6 @@ def ppgTournMeanStdev(folderName):
     return means, stdev
 
 
-def ppgRecoResults(teams, recoMatrixMin, recoMatrixMax):
-    """
-    Displays RPPG range recommendation
-    """
-    pass
-
-
 def ppgRecoMatrix(standings, teams, folderName, roundsCompleted, roundsLeft):
     """
     Returns the RPPG for a team to get to a certain placement by the end of tournament
@@ -97,19 +90,28 @@ def ppgRecoMatrix(standings, teams, folderName, roundsCompleted, roundsLeft):
 
     # Get max and min PPG matrix
     ppgMax = meansMatrix + 2 * stdevMatrix
+    ppgAve = meansMatrix
     ppgMin = meansMatrix - 2 * stdevMatrix
 
     # Get expected final points
     expectedFinalMax = np.multiply(ppgMax, roundsCompleted + roundsLeft)
+    expectedFinalAve = np.multiply(ppgAve, roundsCompleted + roundsLeft)
     expectedFinalMin = np.multiply(ppgMin, roundsCompleted + roundsLeft) 
 
     # Get target total points
     targetTotalMax = expectedFinalMax - npStandingsMatrix
+    targetTotalAve = expectedFinalAve - npStandingsMatrix
     targetTotalMin = expectedFinalMin - npStandingsMatrix
 
     # Get target PPG for remaining rounds
     targetPpgMax = np.round(targetTotalMax / roundsLeft, 1)
+    targetPpgAve = np.round(targetTotalAve / roundsLeft, 1)
     targetPpgMin = np.round(targetTotalMin / roundsLeft, 1)
+
+    # Set negative values to zero
+    targetPpgMax[targetPpgMax < 0] = 0
+    targetPpgAve[targetPpgAve < 0] = 0
+    targetPpgMin[targetPpgMin < 0] = 0
 
     # Create row header - placements 
     rowHeader = [x for x in range(1,17)]
@@ -119,11 +121,15 @@ def ppgRecoMatrix(standings, teams, folderName, roundsCompleted, roundsLeft):
                     index = teams,  
                     columns = rowHeader) 
     
+    dfAve = pd.DataFrame(data = targetPpgAve,  
+                    index = teams,  
+                    columns = rowHeader) 
+    
     dfMin = pd.DataFrame(data = targetPpgMin,  
                     index = teams,  
                     columns = rowHeader) 
-
-    return dfMax, dfMin
+    
+    return dfMax, dfAve, dfMin
 
 
 def visualizeFloorExpectedCeiling(df):
