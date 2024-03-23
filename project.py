@@ -488,8 +488,12 @@ def standingRead(filename):
 
     teams = data[0]
     standings = [int(x) for x in data[1]]
-        
-    return teams, standings
+
+    # Sort the data (create dataframe and sort by standing)
+    dict = {'teams':teams, 'standings':standings}# Create data dictionary
+    df = pd.DataFrame(dict).sort_values(by = 'standings', ascending=False)    
+
+    return df['teams'].tolist(), df['standings'].tolist()
 
 
 def averagePPG(data):
