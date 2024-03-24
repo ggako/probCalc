@@ -486,6 +486,13 @@ def standingRead(filename):
     # Read as numpy array, transpose then convert to list
     data = np.loadtxt(filename, delimiter=",", dtype=str).transpose().tolist()
 
+    # Check if loaded array is correct shape (2,16) array
+    if np.shape(data)[0] != 2:
+        raise Exception('Standings csv data should contain 2 columns (teams and standings)')
+
+    if np.shape(data)[1] != 16:
+        raise Exception('Standings csv data should contain 16 rows / team')
+
     teams = data[0]
     standings = [int(x) for x in data[1]]
 
