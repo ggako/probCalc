@@ -715,6 +715,10 @@ def readData(filename):
             
             game_rows.append(game_row)
 
+    # Check if tournament has 16 placements
+    if len(game_rows) != 16:
+        raise Exception('Tournament should have 16 placements')
+
     # Convert data to numpy array 
     data = np.array(game_rows)
 
@@ -722,6 +726,10 @@ def readData(filename):
 
 
 def main():
+    teams, standings = standingRead('PMS2024_Phase1_Standing.csv') 
+    numTrials = 100000
+    roundsLeft = 6
+    data2 = convertToProbResults(simulation(teams, compileData('Data'), standings, numTrials, roundsLeft), numTrials)
     pass
 
 
