@@ -726,10 +726,6 @@ def readData(filename):
 
 
 def main():
-    teams, standings = standingRead('PMS2024_Phase1_Standing.csv') 
-    numTrials = 100000
-    roundsLeft = 6
-    data2 = convertToProbResults(simulation(teams, compileData('Data'), standings, numTrials, roundsLeft), numTrials)
     pass
 
 
