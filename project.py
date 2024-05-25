@@ -378,8 +378,10 @@ def visualizeBarPlacement(data, teams, placement, addLabel=True, color_base="med
     for lightenAmountIndex in range(16):
         colorsBar.append(lighten_color(color_base, lightenAmount[lightenAmountIndex]))
 
+    dataPlacementProb = [i[placementIndex] for i in data] 
+
     # creating the bar plot
-    plt.bar(teams, data[placementIndex], color = colorsBar, edgecolor='black', linewidth=1,
+    plt.bar(teams, dataPlacementProb, color = colorsBar, edgecolor='black', linewidth=1,
             width = 1)
 
     # Changing background color
@@ -397,7 +399,7 @@ def visualizeBarPlacement(data, teams, placement, addLabel=True, color_base="med
     
     # Adding data labels
     if addLabel:
-        addlabels(teams, data[placementIndex])
+        addlabels(teams, dataPlacementProb)
 
     plt.title(f"% Chance Getting {num2words(placement, lang='en', to='ordinal_num')} Place")
     plt.xlabel("Teams")
